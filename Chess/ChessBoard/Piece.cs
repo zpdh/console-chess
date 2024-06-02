@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Chess.Board
+namespace ChessBoard
 {
-    internal class Piece
+    class Piece
     {
         public Position Position { get; set; }
         public Color Color { get; protected set; }
