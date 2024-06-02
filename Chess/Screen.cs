@@ -19,7 +19,8 @@ namespace Chess
                     {
                         Console.Write("- ");
                     }
-                    Console.Write( board.GetPiece(i, j) + " ");
+
+                    Console.Write(board.GetPiece(i, j) + " ");
                 }
                 Console.WriteLine();
             }

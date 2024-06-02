@@ -13,9 +13,9 @@ namespace ChessBoard
         public int MoveQtt { get; set; }
         public Board Board { get; set; }
 
-        public Piece(Position position, Board board, Color color)
+        public Piece(Board board, Color color)
         {
-            Position=position;
+            Position=null;
             Color=color;
             Board=board;
             MoveQtt = 0;

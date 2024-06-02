@@ -23,5 +23,11 @@ namespace ChessBoard
         {
             return Pieces[row, colum];
         }
+
+        public void AddPiece (Piece piece, Position position)
+        {
+            Pieces[position.Row, position.Column] = piece;
+            piece.Position = position;
+        }
     }
 }
