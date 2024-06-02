@@ -8,10 +8,10 @@ namespace ChessBoard
 {
     class Piece
     {
+        public Board Board { get; set; }
         public Position Position { get; set; }
         public Color Color { get; protected set; }
-        public int MoveQtt { get; set; }
-        public Board Board { get; set; }
+        public int MoveQtt { get; protected set; }
 
         public Piece(Board board, Color color)
         {
@@ -19,6 +19,11 @@ namespace ChessBoard
             Color=color;
             Board=board;
             MoveQtt = 0;
+        }
+
+        public void incrementMoveQtt()
+        {
+            MoveQtt++;
         }
     }
 }

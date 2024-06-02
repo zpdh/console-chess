@@ -12,28 +12,27 @@ namespace Chess
         {
             try
             {
-                Board board = new Board(8, 8);
+                Match match = new Match();
 
-                board.AddPiece(new Rook(board, Color.Black), new Position(0, 1));
-                board.AddPiece(new Knight(board, Color.Black), new Position(0, 2));
-                board.AddPiece(new Bishop(board, Color.Black), new Position(0, 3));
-                board.AddPiece(new Pawn(board, Color.Black), new Position(0, 4));
-                board.AddPiece(new Queen(board, Color.Black), new Position(0, 5));
-                board.AddPiece(new King(board, Color.Black), new Position(0, 6));
+                while (!match.IsFinished)
+                {
+                    Console.Clear();
+                    Screen.PrintBoard(match.Board);
 
-                board.AddPiece(new Rook(board, Color.White), new Position(7, 1));
-                board.AddPiece(new Knight(board, Color.White), new Position(7, 2));
-                board.AddPiece(new Bishop(board, Color.White), new Position(7, 3));
-                board.AddPiece(new Pawn(board, Color.White), new Position(7, 4));
-                board.AddPiece(new Queen(board, Color.White), new Position(7, 5));
-                board.AddPiece(new King(board, Color.White), new Position(7, 6));
+                    Console.WriteLine();
+                    Console.Write("Origin: ");
+                    Position origin = Screen.ReadPosition().ToPosition();
+                    Console.Write("Destination:");
+                    Position destination = Screen.ReadPosition().ToPosition();
 
-                Screen.PrintBoard(board);
+                    match.Move(origin, destination);
+                }
             }
             catch (BoardException e)
             {
                 Console.WriteLine(e.Message);
             }
+            Console.ReadKey();
         }
     }
 }

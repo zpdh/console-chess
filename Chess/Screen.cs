@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ChessBoard;
+using ChessGame;
 
 namespace Chess
 {
@@ -44,6 +45,13 @@ namespace Chess
                 Console.Write(piece);
                 Console.ForegroundColor = color;
             }
+        }
+        public static ChessPosition ReadPosition()
+        {
+            string s = Console.ReadLine();
+            char col = s[0];
+            int row = int.Parse(s[1] + "");
+            return new ChessPosition(col, row);
         }
     }
 }
