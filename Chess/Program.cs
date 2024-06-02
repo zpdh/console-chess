@@ -20,8 +20,12 @@ namespace Chess
                 board.AddPiece(new Pawn(board, Color.Black), new Position(0, 3));
                 board.AddPiece(new Queen(board, Color.Black), new Position(0, 4));
                 board.AddPiece(new King(board, Color.Black), new Position(0, 5));
-                board.AddPiece(new Rook(board, Color.Black), new Position(0, 9));
                 Screen.PrintBoard(board);
+
+                ChessPosition pos = new ChessPosition('c', 7);
+                Console.WriteLine(pos);
+
+                Console.WriteLine(pos.ToPosition());
             }
             catch (BoardException e)
             {
