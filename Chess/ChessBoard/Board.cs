@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChessBoard.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,10 +25,40 @@ namespace ChessBoard
             return Pieces[row, colum];
         }
 
-        public void AddPiece (Piece piece, Position position)
+        public Piece GetPiece(Position position)
         {
+            return Pieces[position.Row, position.Column];
+        }
+
+        public bool PieceExists(Position position)
+        {
+            ValidatePosition(position);
+            return GetPiece(position) != null;
+        }
+
+        public void AddPiece(Piece piece, Position position)
+        {
+            if (PieceExists(position))
+            {
+                throw new BoardException("There's already a piece in this position.");
+            }
+
             Pieces[position.Row, position.Column] = piece;
             piece.Position = position;
+        }
+
+        public bool ValidPosition(Position position)
+        {
+            if (position.Row < 0 || position.Row >= Row || position.Column < 0 || position.Column >= Column) return false;
+            return true;
+        }
+
+        public void ValidatePosition(Position position)
+        {
+            if (!ValidPosition(position))
+            {
+                throw new BoardException("Invalid Position.");
+            }
         }
     }
 }
