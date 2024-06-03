@@ -3,6 +3,7 @@ using ChessBoard.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -198,18 +199,39 @@ namespace ChessGame
 
         private void PrintPieces()
         {
-            for (int i = 1; i <= 8; i++)
-            {
-                PrintNewPiece((char)(i+96), 7, new Rook(Board, Color.Black));
-                PrintNewPiece((char)(i+96), 2, new Rook(Board, Color.White));
-            }
-            PrintNewPiece('c', 8, new Rook(Board, Color.Black));
-            PrintNewPiece('e', 8, new Rook(Board, Color.Black));
-            PrintNewPiece('d', 8, new King(Board, Color.Black));
+            PrintNewPiece('a', 1, new Rook(Board, Color.White));
+            PrintNewPiece('b', 1, new Knight(Board, Color.White));
+            PrintNewPiece('c', 1, new Bishop(Board, Color.White));
+            PrintNewPiece('d', 1, new Queen(Board, Color.White));
+            PrintNewPiece('e', 1, new King(Board, Color.White));
+            PrintNewPiece('f', 1, new Bishop(Board, Color.White));
+            PrintNewPiece('g', 1, new Knight(Board, Color.White));
+            PrintNewPiece('h', 1, new Rook(Board, Color.White));
+            PrintNewPiece('a', 2, new Pawn(Board, Color.White));
+            PrintNewPiece('b', 2, new Pawn(Board, Color.White));
+            PrintNewPiece('c', 2, new Pawn(Board, Color.White));
+            PrintNewPiece('d', 2, new Pawn(Board, Color.White));
+            PrintNewPiece('e', 2, new Pawn(Board, Color.White));
+            PrintNewPiece('f', 2, new Pawn(Board, Color.White));
+            PrintNewPiece('g', 2, new Pawn(Board, Color.White));
+            PrintNewPiece('h', 2, new Pawn(Board, Color.White));
 
-            PrintNewPiece('c', 1, new Rook(Board, Color.White));
-            PrintNewPiece('e', 1, new Rook(Board, Color.White));
-            PrintNewPiece('d', 1, new King(Board, Color.White));
+            PrintNewPiece('a', 8, new Rook(Board, Color.Black));
+            PrintNewPiece('b', 8, new Knight(Board, Color.Black));
+            PrintNewPiece('c', 8, new Bishop(Board, Color.Black));
+            PrintNewPiece('d', 8, new Queen(Board, Color.Black));
+            PrintNewPiece('e', 8, new King(Board, Color.Black));
+            PrintNewPiece('f', 8, new Bishop(Board, Color.Black));
+            PrintNewPiece('g', 8, new Knight(Board, Color.Black));
+            PrintNewPiece('h', 8, new Rook(Board, Color.Black));
+            PrintNewPiece('a', 7, new Pawn(Board, Color.Black));
+            PrintNewPiece('b', 7, new Pawn(Board, Color.Black));
+            PrintNewPiece   ('c', 7, new Pawn(Board, Color.Black));
+            PrintNewPiece('d', 7, new Pawn(Board, Color.Black));
+            PrintNewPiece('e', 7, new Pawn(Board, Color.Black));
+            PrintNewPiece('f', 7, new Pawn(Board, Color.Black));
+            PrintNewPiece('g', 7, new Pawn(Board, Color.Black));
+            PrintNewPiece('h', 7, new Pawn(Board, Color.Black));
         }
     }
 }
