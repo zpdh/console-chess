@@ -9,7 +9,12 @@ namespace ChessGame
 {
     internal class Pawn : Piece
     {
-        public Pawn(Board board, Color color) : base(board, color) { }
+        private Match Match;
+
+        public Pawn(Board board, Color color, Match match) : base(board, color)
+        {
+            Match = match;
+        }
 
         private bool canMove(Position position)
         {
@@ -56,6 +61,26 @@ namespace ChessGame
                 {
                     mArr[position.Row, position.Column] = true;
                 }
+
+                // #specialmove En Passant
+                if (Position.Row == 3)
+                {
+                    Position left = new Position(Position.Row, Position.Column -1);
+                    if (Board.ValidPosition(left) && IsEnemy(left) && Board.GetPiece(left) == Match.VulnToEnPassant)
+                    {
+                        mArr[left.Row -1, left.Column] = true;
+                    }
+                }
+
+                if (Position.Row == 3)
+                {
+                    Position right = new Position(Position.Row, Position.Column +1);
+                    if (Board.ValidPosition(right) && IsEnemy(right) && Board.GetPiece(right) == Match.VulnToEnPassant)
+                    {
+                        mArr[right.Row -1, right.Column] = true;
+                    }
+                }
+
             }
             else
             {
@@ -79,6 +104,26 @@ namespace ChessGame
                 {
                     mArr[position.Row, position.Column] = true;
                 }
+
+                // #specialmove En Passant
+                if (Position.Row == 4)
+                {
+                    Position left = new Position(Position.Row, Position.Column -1);
+                    if (Board.ValidPosition(left) && IsEnemy(left) && Board.GetPiece(left) == Match.VulnToEnPassant)
+                    {
+                        mArr[left.Row + 1, left.Column] = true;
+                    }
+                }
+
+                if (Position.Row == 4)
+                {
+                    Position right = new Position(Position.Row, Position.Column +1);
+                    if (Board.ValidPosition(right) && IsEnemy(right) && Board.GetPiece(right) == Match.VulnToEnPassant)
+                    {
+                        mArr[right.Row + 1, right.Column] = true;
+                    }
+                }
+
             }
 
             return mArr;

@@ -16,6 +16,7 @@ namespace ChessGame
         public Color CurrentPlayer { get; private set; }
         public bool IsFinished { get; private set; }
         public bool Check { get; private set; }
+        public Piece VulnToEnPassant { get; private set; }
         private HashSet<Piece> Pieces;
         private HashSet<Piece> CaptedPieces;
 
@@ -29,6 +30,7 @@ namespace ChessGame
             Check = false;
             Pieces = new HashSet<Piece>();
             CaptedPieces = new HashSet<Piece>();
+            VulnToEnPassant = null;
             PrintPieces();
         }
 
@@ -123,6 +125,25 @@ namespace ChessGame
                     Board.AddPiece(rook, rookDest);
                 }
 
+                // #specialmove En Passant
+                if (piece is Pawn)
+                {
+                    if (origin.Column != destination.Column && capturedPiece == null)
+                    {
+                        Position capPos;
+                        if (piece.Color == Color.White)
+                        {
+                            capPos = new Position(destination.Row +1, destination.Column);
+                        }
+                        else
+                        {
+                            capPos = new Position(destination.Row -1, destination.Column);
+                        }
+                        capturedPiece = Board.RemovePiece(capPos);
+                        CaptedPieces.Add(capturedPiece);
+                    }
+                }
+
                 return capturedPiece;
             }
             else throw new BoardException("This piece can't move there silly!");
@@ -159,6 +180,24 @@ namespace ChessGame
                 Board.AddPiece(rook, rookOrigin);
             }
 
+            // #specialmove En Passant
+            if (piece is Pawn)
+            {
+                if (origin.Column != destination.Column && capturedPiece == VulnToEnPassant)
+                {
+                    Piece pawn = Board.RemovePiece(destination);
+                    Position capPos;
+                    if (piece.Color == Color.White)
+                    {
+                        capPos = new Position(3, destination.Column);
+                    }
+                    else
+                    {
+                        capPos = new Position(4, destination.Column);
+                    }
+                    Board.AddPiece(pawn, capPos);
+                }
+            }
         }
 
         public void TakeTurn(Position origin, Position destination)
@@ -187,6 +226,19 @@ namespace ChessGame
 
             Turn++;
             ChangePlayer();
+
+            Piece piece = Board.GetPiece(destination);
+
+            // #specialmove En Passant
+
+            if (piece is Pawn && destination.Row == origin.Row -2 || destination.Row == origin.Row + 2)
+            {
+                VulnToEnPassant = piece;
+            }
+            else
+            {
+                VulnToEnPassant = null;
+            }
         }
 
         public void ValidateOrigin(Position origin)
@@ -249,14 +301,14 @@ namespace ChessGame
             //PrintNewPiece('f', 1, new Bishop(Board, Color.White));
             //PrintNewPiece('g', 1, new Knight(Board, Color.White));
             PrintNewPiece('h', 1, new Rook(Board, Color.White));
-            PrintNewPiece('a', 2, new Pawn(Board, Color.White));
-            PrintNewPiece('b', 2, new Pawn(Board, Color.White));
-            PrintNewPiece('c', 2, new Pawn(Board, Color.White));
-            PrintNewPiece('d', 2, new Pawn(Board, Color.White));
-            PrintNewPiece('e', 2, new Pawn(Board, Color.White));
-            PrintNewPiece('f', 2, new Pawn(Board, Color.White));
-            PrintNewPiece('g', 2, new Pawn(Board, Color.White));
-            PrintNewPiece('h', 2, new Pawn(Board, Color.White));
+            PrintNewPiece('a', 2, new Pawn(Board, Color.White, this));
+            PrintNewPiece('b', 2, new Pawn(Board, Color.White, this));
+            PrintNewPiece('c', 2, new Pawn(Board, Color.White, this));
+            PrintNewPiece('d', 2, new Pawn(Board, Color.White, this));
+            PrintNewPiece('e', 2, new Pawn(Board, Color.White, this));
+            PrintNewPiece('f', 2, new Pawn(Board, Color.White, this));
+            PrintNewPiece('g', 2, new Pawn(Board, Color.White, this));
+            PrintNewPiece('h', 2, new Pawn(Board, Color.White, this));
 
             PrintNewPiece('a', 8, new Rook(Board, Color.Black));
             //PrintNewPiece('b', 8, new Knight(Board, Color.Black));
@@ -266,14 +318,14 @@ namespace ChessGame
             //PrintNewPiece('f', 8, new Bishop(Board, Color.Black));
             PrintNewPiece('g', 8, new Knight(Board, Color.Black));
             PrintNewPiece('h', 8, new Rook(Board, Color.Black));
-            PrintNewPiece('a', 7, new Pawn(Board, Color.Black));
-            PrintNewPiece('b', 7, new Pawn(Board, Color.Black));
-            PrintNewPiece   ('c', 7, new Pawn(Board, Color.Black));
-            PrintNewPiece('d', 7, new Pawn(Board, Color.Black));
-            PrintNewPiece('e', 7, new Pawn(Board, Color.Black));
-            PrintNewPiece('f', 7, new Pawn(Board, Color.Black));
-            PrintNewPiece('g', 7, new Pawn(Board, Color.Black));
-            PrintNewPiece('h', 7, new Pawn(Board, Color.Black));
+            PrintNewPiece('a', 7, new Pawn(Board, Color.Black, this));
+            PrintNewPiece('b', 7, new Pawn(Board, Color.Black, this));
+            PrintNewPiece   ('c', 7, new Pawn(Board, Color.Black, this));
+            PrintNewPiece('d', 7, new Pawn(Board, Color.Black, this));
+            PrintNewPiece('e', 7, new Pawn(Board, Color.Black, this));
+            PrintNewPiece('f', 7, new Pawn(Board, Color.Black, this));
+            PrintNewPiece('g', 7, new Pawn(Board, Color.Black, this));
+            PrintNewPiece('h', 7, new Pawn(Board, Color.Black, this));
         }
     }
 }
