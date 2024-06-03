@@ -33,7 +33,7 @@ namespace Chess
                         Screen.PrintBoard(match.Board, possiblePositions);
                         Console.WriteLine();
 
-                        Console.Write("Destination:");
+                        Console.Write("Destination: ");
                         Position destination = Screen.ReadPosition().ToPosition();
 
                         match.TakeTurn(origin, destination);
@@ -49,7 +49,7 @@ namespace Chess
                         Console.WriteLine();
                         Console.WriteLine(e.Message);
                         Console.ReadKey();
-                    }
+                    } 
                 }
                 Console.Clear();
                 Screen.PrintMatch(match);

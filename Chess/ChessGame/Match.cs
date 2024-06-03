@@ -102,6 +102,27 @@ namespace ChessGame
                 {
                     CaptedPieces.Add(capturedPiece);
                 }
+
+                // #specialmove Short Castle
+                if (piece is King && destination.Column == origin.Column + 2)
+                {
+                    Position rookOrigin = new Position(origin.Row, origin.Column + 3);
+                    Position rookDest = new Position(origin.Row, origin.Column + 1);
+                    Piece rook = Board.RemovePiece(rookOrigin);
+                    Board.AddPiece(rook, rookDest);
+                    rook.incrementMoveQtt();
+                }
+
+                // #specialmove Long Castle
+                if (piece is King && destination.Column == origin.Column - 2)
+                {
+                    Position rookOrigin = new Position(origin.Row, origin.Column - 4);
+                    Position rookDest = new Position(origin.Row, origin.Column - 1);
+                    Piece rook = Board.RemovePiece(rookOrigin);
+                    rook.incrementMoveQtt();
+                    Board.AddPiece(rook, rookDest);
+                }
+
                 return capturedPiece;
             }
             else throw new BoardException("This piece can't move there silly!");
@@ -117,6 +138,27 @@ namespace ChessGame
                 CaptedPieces.Remove(capturedPiece);
             }
             Board.AddPiece(piece, origin);
+
+            // #specialmove Short Castle
+            if (piece is King && destination.Column == origin.Column + 2)
+            {
+                Position rookOrigin = new Position(origin.Row, origin.Column + 3);
+                Position rookDest = new Position(origin.Row, origin.Column + 1);
+                Piece rook = Board.RemovePiece(rookDest);
+                rook.decrementMoveQtt();
+                Board.AddPiece(rook, rookOrigin);
+            }
+
+            // #specialmove Long Castle
+            if (piece is King && destination.Column == origin.Column - 2)
+            {
+                Position rookOrigin = new Position(origin.Row, origin.Column - 4);
+                Position rookDest = new Position(origin.Row, origin.Column - 1);
+                Piece rook = Board.RemovePiece(rookDest);
+                rook.decrementMoveQtt();
+                Board.AddPiece(rook, rookOrigin);
+            }
+
         }
 
         public void TakeTurn(Position origin, Position destination)
@@ -200,12 +242,12 @@ namespace ChessGame
         private void PrintPieces()
         {
             PrintNewPiece('a', 1, new Rook(Board, Color.White));
-            PrintNewPiece('b', 1, new Knight(Board, Color.White));
-            PrintNewPiece('c', 1, new Bishop(Board, Color.White));
-            PrintNewPiece('d', 1, new Queen(Board, Color.White));
-            PrintNewPiece('e', 1, new King(Board, Color.White));
-            PrintNewPiece('f', 1, new Bishop(Board, Color.White));
-            PrintNewPiece('g', 1, new Knight(Board, Color.White));
+            //PrintNewPiece('b', 1, new Knight(Board, Color.White));
+            //PrintNewPiece('c', 1, new Bishop(Board, Color.White));
+            //PrintNewPiece('d', 1, new Queen(Board, Color.White));
+            PrintNewPiece('e', 1, new King(Board, Color.White, this));
+            //PrintNewPiece('f', 1, new Bishop(Board, Color.White));
+            //PrintNewPiece('g', 1, new Knight(Board, Color.White));
             PrintNewPiece('h', 1, new Rook(Board, Color.White));
             PrintNewPiece('a', 2, new Pawn(Board, Color.White));
             PrintNewPiece('b', 2, new Pawn(Board, Color.White));
@@ -217,11 +259,11 @@ namespace ChessGame
             PrintNewPiece('h', 2, new Pawn(Board, Color.White));
 
             PrintNewPiece('a', 8, new Rook(Board, Color.Black));
-            PrintNewPiece('b', 8, new Knight(Board, Color.Black));
-            PrintNewPiece('c', 8, new Bishop(Board, Color.Black));
-            PrintNewPiece('d', 8, new Queen(Board, Color.Black));
-            PrintNewPiece('e', 8, new King(Board, Color.Black));
-            PrintNewPiece('f', 8, new Bishop(Board, Color.Black));
+            //PrintNewPiece('b', 8, new Knight(Board, Color.Black));
+            //PrintNewPiece('c', 8, new Bishop(Board, Color.Black));
+            //PrintNewPiece('d', 8, new Queen(Board, Color.Black));
+            PrintNewPiece('e', 8, new King(Board, Color.Black, this));
+            //PrintNewPiece('f', 8, new Bishop(Board, Color.Black));
             PrintNewPiece('g', 8, new Knight(Board, Color.Black));
             PrintNewPiece('h', 8, new Rook(Board, Color.Black));
             PrintNewPiece('a', 7, new Pawn(Board, Color.Black));
