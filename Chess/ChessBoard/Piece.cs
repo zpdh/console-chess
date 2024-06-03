@@ -26,6 +26,11 @@ namespace ChessBoard
             MoveQtt++;
         }
 
+        public void decrementMoveQtt()
+        {
+            MoveQtt--;
+        }
+
         public bool CheckForPossibleMoves()
         {
             bool[,] mArr = PossibleMoves();

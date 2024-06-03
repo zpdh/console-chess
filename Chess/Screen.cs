@@ -20,6 +20,11 @@ namespace Chess
             Console.WriteLine();
             Console.WriteLine("Turn: " + match.Turn);
             Console.WriteLine("Awaiting move from " + match.CurrentPlayer);
+            if (match.Check)
+            {
+                Console.WriteLine();
+                Console.WriteLine("CHECK!");
+            }
         }
         public static void PrintCapturedPieces(Match match)
         {
@@ -32,6 +37,7 @@ namespace Chess
             Console.ForegroundColor = ConsoleColor.Yellow;
             PrintSet(match.CapturedPieces(Color.Black));
             Console.ForegroundColor = c;
+            Console.WriteLine();
         }
 
         public static void PrintSet(HashSet<Piece> set)

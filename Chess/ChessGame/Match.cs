@@ -14,6 +14,7 @@ namespace ChessGame
         public int Turn { get; private set; }
         public Color CurrentPlayer { get; private set; }
         public bool IsFinished { get; private set; }
+        public bool Check { get; private set; }
         private HashSet<Piece> Pieces;
         private HashSet<Piece> CaptedPieces;
 
@@ -24,12 +25,41 @@ namespace ChessGame
             Turn = 1;
             CurrentPlayer = Color.White;
             IsFinished = false;
+            Check = false;
             Pieces = new HashSet<Piece>();
             CaptedPieces = new HashSet<Piece>();
             PrintPieces();
         }
 
-        public void Move(Position origin, Position destination)
+        private Color Opponent(Color color)
+        {
+            if (color == Color.White) return Color.Black;
+            else return Color.White;
+        }
+
+        private Piece King(Color color)
+        {
+            foreach (Piece piece in PiecesInGame(color))
+            {
+                if (piece is King) return piece;
+            }
+            return null;
+        }
+
+        public bool isInCheck(Color color)
+        {
+            Piece K = King(color);
+            if (K == null) throw new BoardException($"There's no {color} King in the board!");
+
+            foreach(Piece piece in PiecesInGame(Opponent(color)))
+            {
+                bool[,] arr = piece.PossibleMoves();
+                if (arr[K.Position.Row, K.Position.Column]) return true;
+            }
+            return false;
+        }
+
+        public Piece Move(Position origin, Position destination)
         {
             Piece piece = Board.RemovePiece(origin);
             piece.incrementMoveQtt();
@@ -39,6 +69,41 @@ namespace ChessGame
             {
                 CaptedPieces.Add(capturedPiece);
             }
+            return capturedPiece;
+        }
+
+        public void UndoMove(Position origin, Position destination, Piece capturedPiece)
+        {
+            Piece piece = Board.RemovePiece(destination);
+            piece.decrementMoveQtt();
+            if (capturedPiece != null)
+            {
+                Board.AddPiece(capturedPiece, destination);
+                CaptedPieces.Remove(capturedPiece);
+            }
+            Board.AddPiece(piece, origin);
+        }
+
+        public void TakeTurn(Position origin, Position destination)
+        {
+            Piece capturedPiece = Move(origin, destination);
+
+            if (isInCheck(CurrentPlayer))
+            {
+                UndoMove(origin, destination, capturedPiece);
+                throw new BoardException("You cannot put yourself in check!");
+            }
+
+            if (isInCheck(Opponent(CurrentPlayer)))
+            {
+                Check = true;
+            }
+            else
+            {
+                Check = false;
+            }
+            Turn++;
+            ChangePlayer();
         }
 
         public void ValidateOrigin(Position origin)
@@ -55,17 +120,10 @@ namespace ChessGame
                 case Color.White:
                     CurrentPlayer = Color.Black;
                     break;
-                    case Color.Black:
+                case Color.Black:
                     CurrentPlayer = Color.White;
                     break;
             }
-        }
-
-        public void TakeTurn(Position origin, Position destination)
-        {
-            Move(origin, destination);
-            Turn++;
-            ChangePlayer();
         }
 
         public HashSet<Piece> CapturedPieces(Color color)
@@ -78,7 +136,7 @@ namespace ChessGame
             return pieces;
         }
 
-        public HashSet<Piece> PiecesInGame (Color color)
+        public HashSet<Piece> PiecesInGame(Color color)
         {
             HashSet<Piece> pieces = new HashSet<Piece>();
             foreach (Piece piece in Pieces)
@@ -111,7 +169,7 @@ namespace ChessGame
 
             PrintNewPiece('c', 1, new Rook(Board, Color.White));
             PrintNewPiece('e', 1, new Rook(Board, Color.White));
-            PrintNewPiece('d', 1, new Rook(Board, Color.White));
+            PrintNewPiece('d', 1, new King(Board, Color.White));
         }
     }
 }
