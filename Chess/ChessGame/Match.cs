@@ -209,6 +209,20 @@ namespace ChessGame
                 UndoMove(origin, destination, capturedPiece);
                 throw new BoardException("You cannot put yourself in check!");
             }
+            Piece piece = Board.GetPiece(destination);
+
+            // #specialmove Promotion
+            if (piece is Pawn)
+            {
+                if (piece.Color == Color.White && destination.Row == 0 || piece.Color == Color.Black && destination.Row == 7)
+                {
+                    piece = Board.RemovePiece(destination);
+                    Pieces.Remove(piece);
+                    Piece queen = new Queen(Board, piece.Color);
+                    Board.AddPiece(queen, destination);
+                    Pieces.Add(queen);
+                }
+            }
 
             if (TestCheckmate(Opponent(CurrentPlayer)))
             {
@@ -227,7 +241,6 @@ namespace ChessGame
             Turn++;
             ChangePlayer();
 
-            Piece piece = Board.GetPiece(destination);
 
             // #specialmove En Passant
 
@@ -294,12 +307,12 @@ namespace ChessGame
         private void PrintPieces()
         {
             PrintNewPiece('a', 1, new Rook(Board, Color.White));
-            //PrintNewPiece('b', 1, new Knight(Board, Color.White));
-            //PrintNewPiece('c', 1, new Bishop(Board, Color.White));
-            //PrintNewPiece('d', 1, new Queen(Board, Color.White));
+            PrintNewPiece('b', 1, new Knight(Board, Color.White));
+            PrintNewPiece('c', 1, new Bishop(Board, Color.White));
+            PrintNewPiece('d', 1, new Queen(Board, Color.White));
             PrintNewPiece('e', 1, new King(Board, Color.White, this));
-            //PrintNewPiece('f', 1, new Bishop(Board, Color.White));
-            //PrintNewPiece('g', 1, new Knight(Board, Color.White));
+            PrintNewPiece('f', 1, new Bishop(Board, Color.White));
+            PrintNewPiece('g', 1, new Knight(Board, Color.White));
             PrintNewPiece('h', 1, new Rook(Board, Color.White));
             PrintNewPiece('a', 2, new Pawn(Board, Color.White, this));
             PrintNewPiece('b', 2, new Pawn(Board, Color.White, this));
@@ -311,11 +324,11 @@ namespace ChessGame
             PrintNewPiece('h', 2, new Pawn(Board, Color.White, this));
 
             PrintNewPiece('a', 8, new Rook(Board, Color.Black));
-            //PrintNewPiece('b', 8, new Knight(Board, Color.Black));
-            //PrintNewPiece('c', 8, new Bishop(Board, Color.Black));
-            //PrintNewPiece('d', 8, new Queen(Board, Color.Black));
+            PrintNewPiece('b', 8, new Knight(Board, Color.Black));
+            PrintNewPiece('c', 8, new Bishop(Board, Color.Black));
+            PrintNewPiece('d', 8, new Queen(Board, Color.Black));
             PrintNewPiece('e', 8, new King(Board, Color.Black, this));
-            //PrintNewPiece('f', 8, new Bishop(Board, Color.Black));
+            PrintNewPiece('f', 8, new Bishop(Board, Color.Black));
             PrintNewPiece('g', 8, new Knight(Board, Color.Black));
             PrintNewPiece('h', 8, new Rook(Board, Color.Black));
             PrintNewPiece('a', 7, new Pawn(Board, Color.Black, this));
