@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using ChessBoard;
 using ChessBoard.Exceptions;
 using ChessGame;
@@ -12,7 +13,7 @@ namespace Chess
         {
             try
             {
-                Match match = new Match();
+                ChessGame.Match match = new ChessGame.Match();
 
                 while (!match.IsFinished)
                 {
@@ -50,12 +51,13 @@ namespace Chess
                         Console.ReadKey();
                     }
                 }
+                Console.Clear();
+                Screen.PrintMatch(match);
             }
             catch (BoardException e)
             {
                 Console.WriteLine(e.Message);
             }
-            Console.ReadKey();
         }
     }
 }

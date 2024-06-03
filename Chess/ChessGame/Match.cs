@@ -59,6 +59,34 @@ namespace ChessGame
             return false;
         }
 
+        public bool TestCheckmate(Color color)
+        {
+            if (!isInCheck(color)) return false;
+            foreach (Piece piece in PiecesInGame(color))
+            {
+                bool[,] mArr = piece.PossibleMoves();
+                for (int i = 0; i < Board.Row; i++)
+                {
+                    for (int j = 0; j < Board.Column; j++)
+                    {
+                        if (mArr[i,j])
+                        {
+                            Position origin = piece.Position;
+                            Position destination = new Position(i, j);
+                            Piece capturedPiece = Move(origin, destination);
+                            bool testCheck = isInCheck(color);
+                            UndoMove(origin, destination, capturedPiece);
+                            if (!testCheck)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
         public Piece Move(Position origin, Position destination)
         {
 
@@ -100,6 +128,11 @@ namespace ChessGame
                 throw new BoardException("You cannot put yourself in check!");
             }
 
+            if (TestCheckmate(Opponent(CurrentPlayer)))
+            {
+                IsFinished = true;
+            }
+
             if (isInCheck(Opponent(CurrentPlayer)))
             {
                 Check = true;
@@ -108,6 +141,7 @@ namespace ChessGame
             {
                 Check = false;
             }
+
             Turn++;
             ChangePlayer();
         }
