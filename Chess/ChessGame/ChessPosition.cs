@@ -18,6 +18,7 @@ namespace ChessGame
             Row=row;
         }
 
+
         public Position ToPosition()
         {
             return new Position(8 - Row, Column - 'a');

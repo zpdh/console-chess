@@ -35,9 +35,12 @@ namespace ChessGame
         {
             for (int i = 1; i <= 8; i++)
             {
-                Board.AddPiece(new Pawn(Board, Color.Black), new ChessPosition((char)(i+96), 7).ToPosition());
-                Board.AddPiece(new Pawn(Board, Color.White), new ChessPosition((char)(i+96), 2).ToPosition());
+                Board.AddPiece(new Rook(Board, Color.Black), new ChessPosition((char)(i+96), 7).ToPosition());
+                Board.AddPiece(new Rook(Board, Color.White), new ChessPosition((char)(i+96), 2).ToPosition());
             }
+
+            Board.AddPiece(new King(Board, Color.Black), new ChessPosition((char)(4+96), 8).ToPosition());
+            Board.AddPiece(new King(Board, Color.White), new ChessPosition((char)(4+96), 1).ToPosition());
         }
     }
 }

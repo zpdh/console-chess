@@ -19,6 +19,12 @@ namespace ChessBoard
             Column = column;
         }
 
+        public void DefineValues(int row, int column)
+        {
+            Row = row;
+            Column = column;
+        }
+
         public override string ToString()
         {
             return Row + ", " + Column;
