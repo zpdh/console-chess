@@ -26,6 +26,22 @@ namespace ChessBoard
             MoveQtt++;
         }
 
+        public bool CheckForPossibleMoves()
+        {
+            bool[,] mArr = PossibleMoves();
+            for (int i = 0; i < Board.Row; i++)
+            {
+                for (int j = 0; j < Board.Column; j++)
+                {
+                    if (mArr[i,j])
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         public abstract bool[,] PossibleMoves();
     }
 }

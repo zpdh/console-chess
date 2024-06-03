@@ -10,16 +10,77 @@ namespace Chess
 {
     class Screen
     {
+        public static bool LegendHasAppeared = false;
+
+        public static void PrintMatch(Match match)
+        {
+            PrintBoard(match.Board);
+            Console.WriteLine();
+            PrintCapturedPieces(match);
+            Console.WriteLine();
+            Console.WriteLine("Turn: " + match.Turn);
+            Console.WriteLine("Awaiting move from " + match.CurrentPlayer);
+        }
+        public static void PrintCapturedPieces(Match match)
+        {
+            Console.WriteLine("Captured Pieces: ");
+            Console.Write("White: ");
+            PrintSet(match.CapturedPieces(Color.White));
+            Console.WriteLine();
+            Console.Write("Black: ");
+            ConsoleColor c = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            PrintSet(match.CapturedPieces(Color.Black));
+            Console.ForegroundColor = c;
+        }
+
+        public static void PrintSet(HashSet<Piece> set)
+        {
+            Console.Write("[");
+            foreach (Piece piece in set)
+            {
+                Console.Write(piece + " ");
+            }
+            Console.Write("]");
+        }
+
         public static void PrintBoard(Board board)
         {
-            for (int i = 0; i < board.Row; i++)
+            if (!LegendHasAppeared)
             {
-                Console.Write(8-i + " ");
-                for (int j = 0; j < board.Column; j++)
+                string[] legendElements = new string[board.Row];
+                legendElements[0] = "         Legend:";
+                legendElements[1] = "         K: King";
+                legendElements[2] = "         Q: Queen";
+                legendElements[3] = "         R: Rook";
+                legendElements[4] = "         N: Knight";
+                legendElements[5] = "         B: Bishop";
+                legendElements[6] = "         P: Pawn";
+                legendElements[7] = "         Origin: Select Piece; Destination: Space to move piece to.";
+
+                for (int i = 0; i < board.Row; i++)
                 {
-                    PrintPiece(board.GetPiece(i, j));
+                    Console.Write(8-i + " ");
+                    for (int j = 0; j < board.Column; j++)
+                    {
+                        PrintPiece(board.GetPiece(i, j));
+                    }
+                    Console.Write(legendElements[i]);
+                    Console.WriteLine();
+                    Screen.LegendHasAppeared = true;
                 }
-                Console.WriteLine();
+            }
+            else
+            {
+                for (int i = 0; i < board.Row; i++)
+                {
+                    Console.Write(8-i + " ");
+                    for (int j = 0; j < board.Column; j++)
+                    {
+                        PrintPiece(board.GetPiece(i, j));
+                    }
+                    Console.WriteLine();
+                }
             }
             Console.WriteLine("  a b c d e f g h ");
         }
