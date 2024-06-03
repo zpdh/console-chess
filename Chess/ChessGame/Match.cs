@@ -61,15 +61,21 @@ namespace ChessGame
 
         public Piece Move(Position origin, Position destination)
         {
-            Piece piece = Board.RemovePiece(origin);
-            piece.incrementMoveQtt();
-            Piece capturedPiece = Board.RemovePiece(destination);
-            Board.AddPiece(piece, destination);
-            if (capturedPiece != null)
+
+            bool[,] possiblePositions = Board.GetPiece(origin).PossibleMoves();
+            if (possiblePositions[destination.Row, destination.Column])
             {
-                CaptedPieces.Add(capturedPiece);
+                Piece piece = Board.RemovePiece(origin);
+                piece.incrementMoveQtt();
+                Piece capturedPiece = Board.RemovePiece(destination);
+                Board.AddPiece(piece, destination);
+                if (capturedPiece != null)
+                {
+                    CaptedPieces.Add(capturedPiece);
+                }
+                return capturedPiece;
             }
-            return capturedPiece;
+            else throw new BoardException("This piece can't move there silly!");
         }
 
         public void UndoMove(Position origin, Position destination, Piece capturedPiece)

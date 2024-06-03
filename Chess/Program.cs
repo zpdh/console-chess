@@ -43,6 +43,12 @@ namespace Chess
                         Console.WriteLine(e.Message);
                         Console.ReadKey();
                     }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine(e.Message);
+                        Console.ReadKey();
+                    }
                 }
             }
             catch (BoardException e)
